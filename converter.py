@@ -1,9 +1,15 @@
 import os
+import platform
 import zipfile
 import shutil
 
 #This line finds all the files in the current dir ending with ".app"
 files = [f for f in os.listdir('.') if os.path.isfile(f) and f.split(".")[1] == "app"]
+
+if platform.system() == 'Windows':
+    separator = '\\'
+else:
+    separator = '/'
 
 #Iterating throught all the pertinent files
 for f in files:
@@ -15,7 +21,7 @@ for f in files:
     with zipfile.ZipFile(nameWithZipExt, 'r') as zip_ref:
         zip_ref.extractall(nameWithoutExt)
     #Copy Runner.app to Payload
-    shutil.copytree('Runner\\', 'temp\\')
+    shutil.copytree('Runner' + separator, 'temp' + separator)
     #Zip the Payload folder
     shutil.make_archive("Payload", 'zip', "temp")
     #Rename the file from zip to ipa
